@@ -192,6 +192,8 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- My Custom
 vim.keymap.set("i", "jl", "<right>", { desc = "Move cursor to right by jk" })
 
+vim.g.terminal_emulator = "powershell"
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -627,8 +629,23 @@ require("lazy").setup({
 			local omnisharp_bin = "C:\\Users\\PC\\AppData\\Local\\omnisharp-win-x64\\OmniSharp.exe"
 
 			local on_attach = function(client, bufnr)
-				-- Enable completion triggered by <c-x><c-o>
-				vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+				vim.keymap.set(
+					"n",
+					"gd",
+					"<Cmd>lua require('omnisharp_extended').lsp_definitions()<CR>",
+					{ desc = "replaces vim.lsp.buf.definition()" }
+				)
+
+				vim.keymap.set(
+					"n",
+					"<leader>D",
+					"<Cmd>lua require('omnisharp_extended').lsp_type_definitions()<CR>",
+					{ desc = "Type Definition" }
+				)
+
+				vim.keymap.set("n", "gr", "<Cmd>lua require('omnisharp_extended').lsp_references()<CR>")
+
+				vim.keymap.set("n", "gi", "<Cmd>lua require('omnisharp_extended').lsp_implementations()<CR>")
 			end
 
 			local servers = {
@@ -648,11 +665,49 @@ require("lazy").setup({
 				omnisharp = {
 					cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
 					on_attach = on_attach,
+					settings = {
+						FormattingOptions = {
+							-- Enables support for reading code style, naming convention and analyzer
+							-- settings from .editorconfig.
+							EnableEditorConfigSupport = true,
+							-- Specifies whether 'using' directives should be grouped and sorted during
+							-- document formatting.
+							OrganizeImports = nil,
+						},
+						MsBuild = {
+							-- If true, MSBuild project system will only load projects for files that
+							-- were opened in the editor. This setting is useful for big C# codebases
+							-- and allows for faster initialization of code navigation features only
+							-- for projects that are relevant to code that is being edited. With this
+							-- setting enabled OmniSharp may load fewer projects and may thus display
+							-- incomplete reference lists for symbols.
+							LoadProjectsOnDemand = nil,
+						},
+						RoslynExtensionsOptions = {
+							-- Enables support for roslyn analyzers, code fixes and rulesets.
+							EnableAnalyzersSupport = nil,
+							-- Enables support for showing unimported types and unimported extension
+							-- methods in completion lists. When committed, the appropriate using
+							-- directive will be added at the top of the current file. This option can
+							-- have a negative impact on initial completion responsiveness,
+							-- particularly for the first few completion sessions after opening a
+							-- solution.
+							EnableImportCompletion = true,
+							-- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+							-- true
+							AnalyzeOpenDocumentsOnly = true,
+						},
+						Sdk = {
+							-- Specifies whether to include preview versions of the .NET SDK when
+							-- determining which version to use for project loading.
+							IncludePrereleases = true,
+						},
+					},
 				},
 
 				lua_ls = {
 					-- cmd = { ... },
-					-- filetypes = { ... },
+					iletypes = { "lua" },
 					-- capabilities = {},
 					settings = {
 						Lua = {
@@ -698,6 +753,9 @@ require("lazy").setup({
 				},
 			})
 		end,
+	},
+	{
+		url = "https://github.com/Hoffs/omnisharp-extended-lsp.nvim.git",
 	},
 
 	{ -- Autoformat

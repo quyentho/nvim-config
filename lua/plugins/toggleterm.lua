@@ -26,6 +26,7 @@ return {
 			terminal_mappings = true,
 			close_on_exit = true,
 			auto_scroll = true,
+			shell = vim.o.shell,
 		})
 
 		function _G.set_terminal_keymaps()
