@@ -545,6 +545,10 @@ require("lazy").setup({
 						"[W]orkspace [S]ymbols"
 					)
 
+					-- map("A-j", "<Cmd>Telescope actions move_selection down<CR>i", "Move Selection Down")
+					-- map("A-k", "<Cmd>Telescope actions move_selection up<CR>i", "Move Selection Up")
+					-- map("<CR>", "<Cmd>Telescope actions execute<CR>", "Execute Code Action")
+
 					-- Rename the variable under your cursor.
 					--  Most Language Servers support renaming across files, etc.
 					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
@@ -857,9 +861,9 @@ require("lazy").setup({
 				-- No, but seriously. Please read `:help ins-completion`, it is really good!
 				mapping = cmp.mapping.preset.insert({
 					-- Select the [n]ext item
-					["<C-n>"] = cmp.mapping.select_next_item(),
+					["<A-j>"] = cmp.mapping.select_next_item(),
 					-- Select the [p]revious item
-					["<C-p>"] = cmp.mapping.select_prev_item(),
+					["<A-k>"] = cmp.mapping.select_prev_item(),
 
 					-- Scroll the documentation window [b]ack / [f]orward
 					["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -1032,6 +1036,7 @@ require("lazy").setup({
 	-- require 'kickstart.plugins.lint',
 	-- require 'kickstart.plugins.autopairs',
 	require("plugins.neo-tree"),
+	require("plugins.neogit"),
 	require("plugins.toggleterm"),
 	-- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 

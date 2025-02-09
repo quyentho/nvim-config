@@ -46,8 +46,8 @@ return {
 		vim.keymap.set("n", [[<C-\>]], "<Cmd>ToggleTerm direction=horizontal<CR>")
 		vim.keymap.set("i", [[<C-\>]], "<Esc><Cmd>ToggleTerm<CR>")
 
-		vim.keymap.set("n", "|", "<Cmd>ToggleTerm direction=vertical<CR>")
-		vim.keymap.set("i", "|", "<Esc><Cmd>ToggleTerm direction=vertical<CR>")
+		vim.keymap.set("n", [[<leader>\]], "<Cmd>ToggleTerm direction=vertical<CR>")
+		vim.keymap.set("i", [[<leader>\]], "<Esc><Cmd>ToggleTerm direction=vertical<CR>")
 
 		vim.api.nvim_create_autocmd("TermEnter", {
 			pattern = "term://*",
