@@ -463,7 +463,15 @@ require("lazy").setup({
 			-- Automatically install LSPs and related tools to stdpath for Neovim
 			-- Mason must be loaded before its dependents so we need to set it up here.
 			-- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-			{ "williamboman/mason.nvim", opts = {} },
+			{
+				"williamboman/mason.nvim",
+				opts = {
+					registries = {
+						"github:mason-org/mason-registry",
+						"github:crashdummyy/mason-registry",
+					},
+				},
+			},
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -629,28 +637,6 @@ require("lazy").setup({
 			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-			local pid = vim.fn.getpid()
-			local omnisharp_bin = "C:\\Users\\PC\\AppData\\Local\\omnisharp-win-x64\\OmniSharp.exe"
-
-			local on_attach = function(client, bufnr)
-				vim.keymap.set(
-					"n",
-					"gd",
-					"<Cmd>lua require('omnisharp_extended').lsp_definitions()<CR>",
-					{ desc = "replaces vim.lsp.buf.definition()" }
-				)
-
-				vim.keymap.set(
-					"n",
-					"<leader>D",
-					"<Cmd>lua require('omnisharp_extended').lsp_type_definitions()<CR>",
-					{ desc = "Type Definition" }
-				)
-
-				vim.keymap.set("n", "gr", "<Cmd>lua require('omnisharp_extended').lsp_references()<CR>")
-
-				vim.keymap.set("n", "gi", "<Cmd>lua require('omnisharp_extended').lsp_implementations()<CR>")
-			end
 
 			local servers = {
 				-- clangd = {},
@@ -666,49 +652,8 @@ require("lazy").setup({
 				-- ts_ls = {},
 				--
 				--
-				omnisharp = {
-					cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid) },
-					on_attach = on_attach,
-					settings = {
-						FormattingOptions = {
-							-- Enables support for reading code style, naming convention and analyzer
-							-- settings from .editorconfig.
-							EnableEditorConfigSupport = true,
-							-- Specifies whether 'using' directives should be grouped and sorted during
-							-- document formatting.
-							OrganizeImports = nil,
-						},
-						MsBuild = {
-							-- If true, MSBuild project system will only load projects for files that
-							-- were opened in the editor. This setting is useful for big C# codebases
-							-- and allows for faster initialization of code navigation features only
-							-- for projects that are relevant to code that is being edited. With this
-							-- setting enabled OmniSharp may load fewer projects and may thus display
-							-- incomplete reference lists for symbols.
-							LoadProjectsOnDemand = nil,
-						},
-						RoslynExtensionsOptions = {
-							-- Enables support for roslyn analyzers, code fixes and rulesets.
-							EnableAnalyzersSupport = nil,
-							-- Enables support for showing unimported types and unimported extension
-							-- methods in completion lists. When committed, the appropriate using
-							-- directive will be added at the top of the current file. This option can
-							-- have a negative impact on initial completion responsiveness,
-							-- particularly for the first few completion sessions after opening a
-							-- solution.
-							EnableImportCompletion = true,
-							-- Only run analyzers against open files when 'enableRoslynAnalyzers' is
-							-- true
-							AnalyzeOpenDocumentsOnly = true,
-						},
-						Sdk = {
-							-- Specifies whether to include preview versions of the .NET SDK when
-							-- determining which version to use for project loading.
-							IncludePrereleases = true,
-						},
-					},
-				},
-
+				roslyn = {},
+				rzls = {},
 				lua_ls = {
 					-- cmd = { ... },
 					iletypes = { "lua" },
