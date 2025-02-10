@@ -192,7 +192,16 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- My Custom
 vim.keymap.set("i", "jl", "<right>", { desc = "Move cursor to right by jk" })
 
-vim.g.terminal_emulator = "powershell"
+-- vim.g.terminal_emulator = "pwsh.exe"
+
+-- shells
+vim.opt.shell = vim.fn.executable("pwsh") and "pwsh" or "powershell"
+vim.opt.shellcmdflag =
+	"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+vim.opt.shellquote = ""
+vim.opt.shellxquote = ""
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -703,10 +712,6 @@ require("lazy").setup({
 			})
 		end,
 	},
-	{
-		url = "https://github.com/Hoffs/omnisharp-extended-lsp.nvim.git",
-	},
-
 	{ -- Autoformat
 		"stevearc/conform.nvim",
 		event = { "BufWritePre" },
