@@ -661,11 +661,9 @@ require("lazy").setup({
 				-- ts_ls = {},
 				--
 				--
-				roslyn = {},
-				rzls = {},
 				lua_ls = {
 					-- cmd = { ... },
-					iletypes = { "lua" },
+					filetypes = { "lua" },
 					-- capabilities = {},
 					settings = {
 						Lua = {
@@ -988,6 +986,7 @@ require("lazy").setup({
 	require("plugins.neo-tree"),
 	require("plugins.neogit"),
 	require("plugins.toggleterm"),
+	require("plugins.roslyn-nvim"),
 	-- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
 	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
