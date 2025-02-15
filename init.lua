@@ -1000,7 +1000,8 @@ require("lazy").setup({
 	require("plugins.neogit"),
 	require("plugins.toggleterm"),
 	require("plugins.roslyn-nvim"),
-	require("plugins.nvim-dap"),
+	-- require("plugins.nvim-dap"),
+	-- require("plugins.nvim-dap-ui"),
 
 	-- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 

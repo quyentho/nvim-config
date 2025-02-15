@@ -17,9 +17,8 @@
 -- }
 return {
 	url = "git@github.com:mfussenegger/nvim-dap.git",
-	init = function()
+	config = function()
 		local dap = require("dap")
-		dap.set_log_level("TRACE")
 		dap.adapters.coreclr = {
 			type = "executable",
 			command = "netcoredbg.exe",
